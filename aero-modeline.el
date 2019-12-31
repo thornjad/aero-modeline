@@ -1,3 +1,4 @@
+;;; aero-modeline.el --- smooth, informative modeline
 ;; -*- lexical-binding: t -*-
 ;;
 ;; Copyright (c) 2019 Jade Michael Thornton
@@ -16,16 +17,17 @@
 ;; other tortious action, arising out of or in connection with the use or
 ;; performance of this software.
 ;;
-;; Commentary:
+;;; Commentary:
 ;;
-;; Code:
+;;; Code:
 
 ;; TODO only load stuff like flycheck if it exists
 (defvar aero-modeline--current-window)
 (defvar flycheck-current-errors)
 (declare-function flycheck-count-errors "flycheck" (errors))
 
-;; Config
+
+;;; Config
 
 (defgroup aero-modeline nil
   "A minimal mode-line configuration inspired by doom-modeline."
@@ -91,7 +93,8 @@
   "Face used for Emacs Evil state message."
   :group 'aero-modeline)
 
-;; Helper functions
+
+;;; Helper functions
 
 (defun aero-info-line-format (left right)
   "Return a string of `window-width' length containing LEFT and RIGHT, aligned respectively."
@@ -108,6 +111,7 @@
   "Return \"t\" if the current window is active, \"nil\" if it is not."
   (eq (selected-window) aero-modeline--current-window))
 
+
 ;;; Update functions
 
 ;; Window update function
@@ -140,10 +144,11 @@
           ('errored (propertize "✘  " 'face 'aero-modeline-status-error))
           ('interrupted (propertize "⏸  " 'face 'aero-modeline-status-grayed-out)))))
 
-;; Segments
+
+;;; Segments
 
 (defun aero-modeline-segment-evil-state ()
-  "Display current evil state. Requires `evil-mode'."
+  "Display current evil state. Requires function `evil-mode'."
   (when (require 'evil nil 'noerror)
     (declare-function evil-state-property "evil")
     (defvar evil-state)
@@ -203,12 +208,13 @@
                       'aero-modeline-status-grayed-out)))
 
 (defun aero-modeline-segment-window-number ()
-  "Displays the current window number as provided by `winum'"
+  "Displays the current window number as provided by `winum'."
   (when (require 'winum nil 'noerror)
     (declare-function winum-get-number "winum")
     (concat (format "|%d| " (winum-get-number)))))
 
-;; Activation function
+
+;;; Activation function
 
 ;; Store the default mode-line format
 (defvar aero-modeline--default-mode-line mode-line-format)
@@ -247,5 +253,8 @@
                          (:eval (aero-modeline-segment-major-mode))
                          (:eval (aero-modeline-segment-window-number))
                          " "))))))))
+
+
+;;; aero-modeline.el ends here
 
 (provide 'aero-modeline)
